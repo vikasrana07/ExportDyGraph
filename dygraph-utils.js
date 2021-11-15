@@ -1,6 +1,22 @@
 /*jslint vars: true, nomen: true, plusplus: true, maxerr: 500, indent: 4 */
 
+/**
+ * @license
+ * Copyright 2011 Juan Manuel Caicedo Carvajal (juan@cavorite.com)
+ * MIT-licensed (http://opensource.org/licenses/MIT)
+ */
 
+/**
+ * @fileoverview This file contains additional features for dygraphs, which
+ * are not required but can be useful for certain use cases. Examples include
+ * exporting a dygraph as a PNG image.
+ */
+
+/**
+ * Demo code for exporting a Dygraph object as an image.
+ *
+ * See: http://cavorite.com/labs/js/dygraphs-export/
+ */
 
 Dygraph.Export = {};
 
