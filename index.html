@@ -1,5 +1,3 @@
-<!-- you too can export dygraphs http://dygraphs.com/ 
-	as pngs by using this awesome library http://cavorite.com/labs/js/dygraphs-export/ -->
 <html>
 	<head>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -15,97 +13,33 @@
 		<image id="imgExport" />
 		<script type="text/javascript" src="dygraph-utils.js" defer></script>
 		<script>
-			var g = null;
-			var GetChartData = function() {
-				$.ajax({
-					url: "graph.json",
-					method: 'GET',
-					dataType: 'json',
-					success: function(response) {
-						graphData = getGraphCollections(response[0].dps, response[1].dps, "pen.flow.bits", 1048576);
-						drawGraph();
-					}
-				});
-			};
-			var getGraphCollections = function(forwardDps, reverseDps, graphType, divideForMBPS) {
-				var combinedTempData = [];
-				var combinedDps = Object.keys(forwardDps);
-				var graphDps = combinedDps.concat(Object.keys(reverseDps));
-				graphDps.sort();
-				graphDps = graphDps.filter(function(v, i, a) {
-					return a.indexOf(v) === i;
-				});
-
-				for (var index = 0; index < graphDps.length; index++) {
-					var i = graphDps[index];
-					var numOperator = parseInt(i);
-					if (forwardDps[i] == null || typeof forwardDps[i] == 'undefined') {
-						forwardDps[i] = null;
-					} else if (forwardDps[i] < 0) {
-						forwardDps[i] = 0;
-					}
-					if (graphType == "pen.flow.bytes") {
-						if (forwardDps[i]) {
-							forwardDps[i] = forwardDps[i] / divideForMBPS;
-						}
-					}
-
-					var temparr = [];
-					temparr[0] = new Date(Number(numOperator * 1000));
-					temparr[1] = forwardDps[i];
-					if (reverseDps[i] == null || typeof reverseDps[i] == 'undefined') {
-						reverseDps[i] = null;
-					} else if (reverseDps[i] < 0) {
-						reverseDps[i] = 0;
-					}
-					if (graphType == "pen.flow.bytes") {
-						if (reverseDps[i]) {
-							reverseDps[i] = reverseDps[i] / divideForMBPS;
-						}
-					}
-					temparr[2] = reverseDps[i];
-
-					combinedTempData.push(temparr);
-					numOperator++;
-				}
-				return combinedTempData;
-			};
-
 			var graphOptions = {
-				labels: ["Time", "F", "R"],
-				colors: ["#495cff",
-					"#aad200"
-				],
-				drawGrid: false,
-				labelsUTC: false,
-				valueRange: [0, null],
-				connectSeparatedPoints: true,
-				drawPoints: false,
-				axes: {
-					y: {
-						axisLabelWidth: 65
-					}
-				}
-			}
-
-			function drawGraph() {
-				g = new Dygraph(
-					document.getElementById("graphdiv"),
-					graphData,
-					graphOptions
-				);
-
-			}
-			$(document).ready(function() {
-				GetChartData();
-			});
+			  // options go here. See http://dygraphs.com/options.html
+			  legend: 'always',
+			  animatedZooms: true,
+			  title: 'dygraphs chart template'
+			};
+			var g = new Dygraph(
+				document.getElementById("graphdiv"),
+				// For possible data formats, see http://dygraphs.com/data.html
+				// The x-values could also be dates, e.g. "2012/03/15"
+				`X,Y,Z
+				1,0,3
+				2,2,6
+				3,4,8
+				4,6,9
+				5,8,9
+				6,10,8
+				7,12,6
+				8,14,3`,
+				graphOptions);
 
 
 			function downloadGraph() {
-				//g.resetZoom();
-				Dygraph.Export.asPNG(g, imgExport,graphOptions);
-				Dygraph.Export.asPDF(g, "graph.pdf");
-			}    
+			  //g.resetZoom();
+			  Dygraph.Export.asPNG(g, imgExport, graphOptions);
+			  Dygraph.Export.asPDF(g, "graph.pdf");
+			}   
 		</script>
 	</body>
 </html>
